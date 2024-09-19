@@ -27,7 +27,7 @@ class Profile(db.Model):
 class Skill(db.Model):
     __tablename__ = 'skills'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True), index=True, nullable=False)
+    name = db.Column(db.String(64), unique=True, index=True, nullable=False)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'))
     
     def __repr__(self):

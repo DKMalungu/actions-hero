@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import config  # we’ll discuss the config file next
+from flask_graphql import GraphQLView
+
 
 db = SQLAlchemy()
 
@@ -25,5 +27,8 @@ def create_app(config_name):
     # The blueprint is registered with a URL prefix of /api/, meaning all routes defined in the api blueprint will be prefixed with /api/.
     from .api import api as api_blueprint  # We will discuss blueprints shortly as well
     app.register_blueprint(api_blueprint, url_prefix='/api/')
-    # COnfigured flask application
+    from .schema import schema  
+    
+    app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+    # Configured flask application
     return app
