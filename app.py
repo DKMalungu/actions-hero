@@ -1,15 +1,14 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-app = Flask(__name__)
+from backend import create_app, db
+from flask_migrate import Migrate
 
-app.config['SQLALCHEMY_DATABASE_URL'] = "postgresql://backup_user:1234@192.168.214.100:5000/nohup"
+from backend.models import User
 
-db = SQLAlchemy(app)
 
-@app.route('/')
-def index():
-    return '<h1>Hello World</h1>'
+app = create_app('development')
+migrate = Migrate(app, db)
 
-@app.route('/hello/<name>')
-def hello(name):
-    return f'<h1>Hello, {name}!</h1>'
+
+
+@app.shell_context_processor
+def make_shell_context():
+   return dict(db=db, User = User)
